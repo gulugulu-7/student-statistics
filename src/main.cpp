@@ -85,6 +85,7 @@ int main() {
         std::cout << "===== 菜单 =====" << std::endl;
         std::cout << "  1. 查询总体数据" << std::endl;
         std::cout << "  2. 按学号查询学生" << std::endl;
+        std::cout << "  3. 导出结果到文件" << std::endl;        
         std::cout << "  0. 退出" << std::endl;
         std::cout << "请输入选项：";
 
@@ -121,9 +122,25 @@ int main() {
                     std::cout << "  未找到学号为 " << target << " 的学生" << std::endl;
                 }
             }
-        } else {
-            std::cout << "无效选项，请输入 0、1 或 2" << std::endl;
-        }
+        } else if (choice == "3") {
+            std::ofstream out("output/report.txt");
+            if (!out.is_open()) {
+                std::cout << "错误：无法写入 output/report.txt" << std::endl;
+            } else {
+                out << "===== 学生成绩统计报告 =====" << std::endl;
+                out << "学生人数：" << students.size() << std::endl;
+                out << "平均分：" << average << std::endl;
+                out << "最高分：" << max_score << std::endl;
+                out << "最低分：" << min_score << std::endl;
+                out << "及格人数：" << pass_count << std::endl;
+                out << std::endl << "===== 学生名单 =====" << std::endl;
+                for (const auto& stu : students) {
+                    out << stu.id << "  " << stu.name << "  " << stu.score << std::endl;
+                }
+                out.close();
+                std::cout << "已导出到 output/report.txt" << std::endl;
+            }
+        } else { std::cout << "无效选项，请输入 0、1、2 或 3" << std::endl; }
     }
     return 0;
 }
